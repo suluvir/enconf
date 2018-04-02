@@ -1,5 +1,7 @@
 # enconf
 
+[![Build Status](https://travis-ci.org/suluvir/enconf.svg?branch=master)](https://travis-ci.org/suluvir/enconf) [![Go Report Card](https://goreportcard.com/badge/github.com/suluvir/enconf)](https://goreportcard.com/report/github.com/suluvir/enconf)
+
 With `enconf`, you can read the configuration from the environment in a simple and 
 type safe way. Just take a look at the following example:
 
