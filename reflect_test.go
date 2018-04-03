@@ -31,6 +31,6 @@ func TestGetShallowFieldNamesInStruct(t *testing.T) {
 	expected := []string{"A", "SomeOtherField"}
 
 	if !reflect.DeepEqual(expected, result) {
-		t.Error(fmt.Sprintf("Expected slices to be equal; expected '%s', got '%s'", expected, result))
+		t.Errorf("Expected slices to be equal; expected '%s', got '%s'", expected, result)
 	}
 }
