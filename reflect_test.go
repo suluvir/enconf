@@ -17,7 +17,6 @@ package enconf
 import (
 	"testing"
 	"reflect"
-	"fmt"
 )
 
 type testStructA struct {
