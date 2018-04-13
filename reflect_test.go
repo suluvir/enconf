@@ -33,3 +33,22 @@ func TestGetShallowFieldNamesInStruct(t *testing.T) {
 		t.Errorf("Expected slices to be equal; expected '%s', got '%s'", expected, result)
 	}
 }
+
+func TestGetValueOfStructField(t *testing.T) {
+	v := testStructA{
+		A: "test",
+		SomeOtherField: 42,
+	}
+
+	resultGetA := getValueOfStructField(v, "A")
+	expectedGetA := "test"
+	if resultGetA != expectedGetA {
+		t.Errorf("Expected to extract '%s', got '%s'", expectedGetA, resultGetA)
+	}
+
+	resultGetOther := getValueOfStructField(v, "SomeOtherField")
+	expectedGetOther := int64(42)
+	if resultGetOther != expectedGetOther{
+		t.Errorf("Expected to extract '%s', got '%s'", expectedGetOther, resultGetOther)
+	}
+}

@@ -27,3 +27,28 @@ func getShallowFieldNamesInStruct(s interface{}) []string {
 
 	return result
 }
+
+func getValueOfStructField(s interface{}, fieldName string) interface{} {
+	v := reflect.ValueOf(s)
+	field := v.FieldByName(fieldName)
+
+	kind := field.Kind()
+
+	switch kind {
+	case reflect.Int:
+		return field.Int()
+	case reflect.Bool:
+		return field.Bool()
+	case reflect.Uint:
+		return field.Uint()
+	case reflect.Float32:
+	case reflect.Float64:
+		return field.Float()
+	case reflect.String:
+		return field.String()
+	case reflect.Struct:
+		return field.Interface()
+	}
+
+	return nil
+}
