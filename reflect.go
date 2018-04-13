@@ -14,7 +14,11 @@
 
 package enconf
 
-import "reflect"
+import (
+	"errors"
+	"fmt"
+	"reflect"
+)
 
 func getShallowFieldNamesInStruct(s interface{}) []string {
 	result := []string{}
@@ -39,11 +43,6 @@ func getValueOfStructField(s interface{}, fieldName string) interface{} {
 		return field.Int()
 	case reflect.Bool:
 		return field.Bool()
-	case reflect.Uint:
-		return field.Uint()
-	case reflect.Float32:
-	case reflect.Float64:
-		return field.Float()
 	case reflect.String:
 		return field.String()
 	case reflect.Struct:
@@ -53,9 +52,35 @@ func getValueOfStructField(s interface{}, fieldName string) interface{} {
 	return nil
 }
 
-func isFieldStruct(s interface{}, fieldName string) bool {
+func setValueOfStructField(s interface{}, fieldName string, fieldValue interface{}) error {
 	v := reflect.ValueOf(s)
 	field := v.FieldByName(fieldName)
 
-	return field.Kind() == reflect.Struct
+	if !field.CanAddr() || !field.CanSet() {
+		return errors.New(fmt.Sprintf("cannot set field '%s'", fieldName))
+	}
+
+	switch getTypeOfField(s, fieldName) {
+	case reflect.Int:
+		field.SetInt(fieldValue.(int64))
+		return nil
+	case reflect.Bool:
+		field.SetBool(fieldValue.(bool))
+		return nil
+	case reflect.String:
+		field.SetString(fieldValue.(string))
+		return nil
+	default:
+		return errors.New(fmt.Sprintf("field '%s' has none of the allowed formats (int, bool, string)", fieldName))
+	}
+}
+
+func isFieldStruct(s interface{}, fieldName string) bool {
+	return getTypeOfField(s, fieldName) == reflect.Struct
+}
+
+func getTypeOfField(s interface{}, fieldName string) reflect.Kind {
+	v := reflect.ValueOf(s)
+	field := v.FieldByName(fieldName)
+	return field.Kind()
 }

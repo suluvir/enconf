@@ -74,3 +74,12 @@ func TestIsFieldStruct(t *testing.T) {
 		t.Error("Expected field 'Other' to be struct, but wasn't")
 	}
 }
+
+//func TestSetFieldValue(t *testing.T) {
+//	v := testStructB{}
+//
+//	err := setValueOfStructField(v, "B", "test")
+//	if err != nil {
+//		t.Errorf("could not set field value. error: %s", err.Error())
+//	}
+//}
