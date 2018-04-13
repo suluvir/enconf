@@ -56,7 +56,7 @@ func TestGetValueOfStructField(t *testing.T) {
 	resultGetOther := getValueOfStructField(v, "SomeOtherField")
 	expectedGetOther := int64(42)
 	if resultGetOther != expectedGetOther{
-		t.Errorf("Expected to extract '%s', got '%s'", expectedGetOther, resultGetOther)
+		t.Errorf("Expected to extract '%d', got '%d'", expectedGetOther, resultGetOther)
 	}
 }
 
