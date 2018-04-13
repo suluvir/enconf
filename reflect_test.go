@@ -15,18 +15,18 @@
 package enconf
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
 type testStructA struct {
-	A string
+	A              string
 	SomeOtherField int
 }
 
 type testStructB struct {
-	B string
-	Other struct{
+	B     string
+	Other struct {
 		B2 int
 	}
 }
@@ -43,7 +43,7 @@ func TestGetShallowFieldNamesInStruct(t *testing.T) {
 
 func TestGetValueOfStructField(t *testing.T) {
 	v := testStructA{
-		A: "test",
+		A:              "test",
 		SomeOtherField: 42,
 	}
 
@@ -55,14 +55,14 @@ func TestGetValueOfStructField(t *testing.T) {
 
 	resultGetOther := getValueOfStructField(v, "SomeOtherField")
 	expectedGetOther := int64(42)
-	if resultGetOther != expectedGetOther{
+	if resultGetOther != expectedGetOther {
 		t.Errorf("Expected to extract '%d', got '%d'", expectedGetOther, resultGetOther)
 	}
 }
 
 func TestIsFieldStruct(t *testing.T) {
 	v := testStructB{
-		B: "test",
+		B:     "test",
 		Other: struct{ B2 int }{B2: 1337},
 	}
 
