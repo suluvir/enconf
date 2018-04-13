@@ -52,3 +52,10 @@ func getValueOfStructField(s interface{}, fieldName string) interface{} {
 
 	return nil
 }
+
+func isFieldStruct(s interface{}, fieldName string) bool {
+	v := reflect.ValueOf(s)
+	field := v.FieldByName(fieldName)
+
+	return field.Kind() == reflect.Struct
+}
