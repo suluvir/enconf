@@ -14,7 +14,10 @@
 
 package enconf
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestGetVariableNameFromPrefixAndConfigPathEmptyPrefixSinglePathElement(t *testing.T) {
 	result := getVariableNameFromPrefixAndConfigPath("", []string{"test"})
@@ -37,5 +40,59 @@ func TestGetVariableNameFromPrefixAndConfigPathNonEmptyPrefixLongPathElement(t *
 	expected := "THEPREFIX_SOME_BASIC_TEST"
 	if result != expected {
 		t.Errorf("expected '%s', got '%s'", expected, result)
+	}
+}
+
+func TestGetExistingEnvironmentVariable(t *testing.T) {
+	os.Setenv("SOME_EXISTING_VARIABLE", "some value")
+
+	value, err := getVariableAsString("SOME_EXISTING_VARIABLE")
+	if value != "some value" || err != nil {
+		t.Errorf("could not get environment variable. got '%s'. error: '%s'", value, err.Error())
+	}
+}
+
+func TestGetNonexistingEnvironmentVariable(t *testing.T) {
+	value, err := getVariableAsString("SOME_NONEXISTING_VARIABLE")
+
+	if value != "" || err == nil {
+		t.Errorf("could access nonexisting variable. value: '%s'", value)
+	}
+}
+
+func TestGetValidVariableAsInt(t *testing.T) {
+	os.Setenv("SOME_VALID_INT_VALUE", "42")
+
+	value, err := getVariableAsInt("SOME_VALID_INT_VALUE")
+
+	if value != 42 || err != nil {
+		t.Errorf("could not parse variable as int. got '%d'. error: %s", value, err.Error())
+	}
+}
+
+func TestGetInvalidVariableAsInt(t *testing.T) {
+	os.Setenv("SOME_INVALID_INT", "foo")
+
+	value, err := getVariableAsInt("SOME_INVALID_INT")
+	if err == nil {
+		t.Errorf("could parse 'bla' as int. got: %d", value)
+	}
+}
+
+func TestGetValidVariableAsBool(t *testing.T) {
+	os.Setenv("SOME_VALID_BOOL", "y")
+
+	value, err := getVariableAsBool("SOME_VALID_BOOL")
+	if err != nil || !value {
+		t.Errorf("could not get value as true. got '%t'. error: %s", value, err.Error())
+	}
+}
+
+func TestGetInvalidVariableAsBool(t *testing.T) {
+	os.Setenv("SOME_INVALID_BOOL", "bla")
+
+	value, _ := getVariableAsBool("SOME_INVALID_BOOL")
+	if value {
+		t.Error("value was true, but shouldn't")
 	}
 }
