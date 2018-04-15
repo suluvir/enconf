@@ -27,7 +27,7 @@ func LoadConfigurationWithPrefix(prefix string, configStruct interface{}) error 
 	fields := getShallowFieldNamesInStruct(configStruct)
 	for _, field := range fields {
 		varName := getVariableNameFromPrefixAndConfigPath(prefix, []string{field})
-		value, getErr := getVariableAsKind(varName, getTypeOfField(configStruct, field))
+		value, getErr := getVariableAsKind(varName, getKindOfField(configStruct, field))
 		if getErr != nil {
 			return getErr
 		}

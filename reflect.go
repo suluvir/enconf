@@ -59,7 +59,7 @@ func setValueOfStructField(s interface{}, fieldName string, fieldValue interface
 		return fmt.Errorf("cannot set field '%s'", fieldName)
 	}
 
-	switch getTypeOfField(s, fieldName) {
+	switch getKindOfField(s, fieldName) {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		field.SetInt(int64(fieldValue.(int)))
 		return nil
@@ -75,10 +75,10 @@ func setValueOfStructField(s interface{}, fieldName string, fieldValue interface
 }
 
 func isFieldStruct(s interface{}, fieldName string) bool {
-	return getTypeOfField(s, fieldName) == reflect.Struct
+	return getKindOfField(s, fieldName) == reflect.Struct
 }
 
-func getTypeOfField(s interface{}, fieldName string) reflect.Kind {
+func getKindOfField(s interface{}, fieldName string) reflect.Kind {
 	v := reflect.ValueOf(s).Elem()
 	field := v.FieldByName(fieldName)
 	return field.Kind()
