@@ -75,11 +75,11 @@ func TestIsFieldStruct(t *testing.T) {
 	}
 }
 
-//func TestSetFieldValue(t *testing.T) {
-//	v := testStructB{}
-//
-//	err := setValueOfStructField(&v, "B", "test")
-//	if err != nil {
-//		t.Errorf("could not set field value. error: %s", err.Error())
-//	}
-//}
+func TestSetFieldValue(t *testing.T) {
+	v := testStructB{}
+
+	err := setValueOfStructField(&v, "B", "test")
+	if err != nil {
+		t.Errorf("could not set field value. error: %s", err.Error())
+	}
+}
