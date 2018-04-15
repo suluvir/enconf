@@ -15,7 +15,6 @@
 package enconf
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 )
@@ -57,7 +56,7 @@ func setValueOfStructField(s interface{}, fieldName string, fieldValue interface
 	field := v.FieldByName(fieldName)
 
 	if !field.CanAddr() || !field.CanSet() {
-		return errors.New(fmt.Sprintf("cannot set field '%s'", fieldName))
+		return fmt.Errorf("cannot set field '%s'", fieldName)
 	}
 
 	switch getTypeOfField(s, fieldName) {
@@ -71,7 +70,7 @@ func setValueOfStructField(s interface{}, fieldName string, fieldValue interface
 		field.SetString(fieldValue.(string))
 		return nil
 	default:
-		return errors.New(fmt.Sprintf("field '%s' has none of the allowed formats (int, bool, string)", fieldName))
+		return fmt.Errorf("field '%s' has none of the allowed formats (int, bool, string)", fieldName)
 	}
 }
 

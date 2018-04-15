@@ -15,7 +15,6 @@
 package enconf
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -42,7 +41,7 @@ func getVariableAsString(name string) (string, error) {
 	if value, ok := os.LookupEnv(name); ok {
 		return value, nil
 	}
-	return "", errors.New(fmt.Sprintf("cannot find environment variable '%s'", name))
+	return "", fmt.Errorf("cannot find environment variable '%s'", name)
 }
 
 func getVariableAsInt(name string) (int, error) {
@@ -53,7 +52,7 @@ func getVariableAsInt(name string) (int, error) {
 
 	result, parseErr := strconv.Atoi(value)
 	if parseErr != nil {
-		return 0, errors.New(fmt.Sprintf("cannot parse variable '%s' as int: %s", name, parseErr.Error()))
+		return 0, fmt.Errorf("cannot parse variable '%s' as int: %s", name, parseErr.Error())
 	}
 	return result, nil
 }
