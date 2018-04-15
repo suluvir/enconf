@@ -17,12 +17,12 @@ package enconf
 // LoadConfiguration loads the configuration from the environment and saves the configuration in the given
 // structure. See `LoadConfigurationWithPrefix` for further info regarding the names of the environment
 // variables parsed.
-func LoadConfiguration(configStruct interface{}) {
-	LoadConfigurationWithPrefix("", configStruct)
+func LoadConfiguration(configStruct interface{}) error {
+	return LoadConfigurationWithPrefix("", configStruct)
 }
 
 // LoadConfigurationWithPrefix does the same as `LoadConfiguration`, but allows for a use of prefixes. The given
 // prefix string will me transformed into uppercase as the struct field names for the configuration struct.
-func LoadConfigurationWithPrefix(prefix string, configStruct interface{}) {
-
+func LoadConfigurationWithPrefix(prefix string, configStruct interface{}) error {
+	return nil
 }
