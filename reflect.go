@@ -33,7 +33,7 @@ func getShallowFieldNamesInStruct(s interface{}) []string {
 }
 
 func getValueOfStructField(s interface{}, fieldName string) interface{} {
-	v := reflect.ValueOf(s)
+	v := reflect.ValueOf(s).Elem()
 	field := v.FieldByName(fieldName)
 
 	kind := field.Kind()
@@ -53,7 +53,7 @@ func getValueOfStructField(s interface{}, fieldName string) interface{} {
 }
 
 func setValueOfStructField(s interface{}, fieldName string, fieldValue interface{}) error {
-	v := reflect.ValueOf(s)
+	v := reflect.ValueOf(s).Elem()
 	field := v.FieldByName(fieldName)
 
 	if !field.CanAddr() || !field.CanSet() {
@@ -80,7 +80,7 @@ func isFieldStruct(s interface{}, fieldName string) bool {
 }
 
 func getTypeOfField(s interface{}, fieldName string) reflect.Kind {
-	v := reflect.ValueOf(s)
+	v := reflect.ValueOf(s).Elem()
 	field := v.FieldByName(fieldName)
 	return field.Kind()
 }

@@ -47,13 +47,13 @@ func TestGetValueOfStructField(t *testing.T) {
 		SomeOtherField: 42,
 	}
 
-	resultGetA := getValueOfStructField(v, "A")
+	resultGetA := getValueOfStructField(&v, "A")
 	expectedGetA := "test"
 	if resultGetA != expectedGetA {
 		t.Errorf("Expected to extract '%s', got '%s'", expectedGetA, resultGetA)
 	}
 
-	resultGetOther := getValueOfStructField(v, "SomeOtherField")
+	resultGetOther := getValueOfStructField(&v, "SomeOtherField")
 	expectedGetOther := int64(42)
 	if resultGetOther != expectedGetOther {
 		t.Errorf("Expected to extract '%d', got '%d'", expectedGetOther, resultGetOther)
@@ -66,11 +66,11 @@ func TestIsFieldStruct(t *testing.T) {
 		Other: struct{ B2 int }{B2: 1337},
 	}
 
-	if isFieldStruct(v, "B") {
+	if isFieldStruct(&v, "B") {
 		t.Error("Expected field 'B' not to be struct, but was")
 	}
 
-	if !isFieldStruct(v, "Other") {
+	if !isFieldStruct(&v, "Other") {
 		t.Error("Expected field 'Other' to be struct, but wasn't")
 	}
 }
@@ -78,7 +78,7 @@ func TestIsFieldStruct(t *testing.T) {
 //func TestSetFieldValue(t *testing.T) {
 //	v := testStructB{}
 //
-//	err := setValueOfStructField(v, "B", "test")
+//	err := setValueOfStructField(&v, "B", "test")
 //	if err != nil {
 //		t.Errorf("could not set field value. error: %s", err.Error())
 //	}
