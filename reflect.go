@@ -60,8 +60,8 @@ func setValueOfStructField(s interface{}, fieldName string, fieldValue interface
 	}
 
 	switch getTypeOfField(s, fieldName) {
-	case reflect.Int:
-		field.SetInt(fieldValue.(int64))
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		field.SetInt(int64(fieldValue.(int)))
 		return nil
 	case reflect.Bool:
 		field.SetBool(fieldValue.(bool))

@@ -24,5 +24,18 @@ func LoadConfiguration(configStruct interface{}) error {
 // LoadConfigurationWithPrefix does the same as `LoadConfiguration`, but allows for a use of prefixes. The given
 // prefix string will me transformed into uppercase as the struct field names for the configuration struct.
 func LoadConfigurationWithPrefix(prefix string, configStruct interface{}) error {
+	fields := getShallowFieldNamesInStruct(configStruct)
+	for _, field := range fields {
+		varName := getVariableNameFromPrefixAndConfigPath(prefix, []string{field})
+		value, getErr := getVariableAsKind(varName, getTypeOfField(configStruct, field))
+		if getErr != nil {
+			return getErr
+		}
+		setErr := setValueOfStructField(configStruct, field, value)
+		if setErr != nil {
+			return setErr
+		}
+	}
+
 	return nil
 }

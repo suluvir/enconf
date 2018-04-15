@@ -17,6 +17,7 @@ package enconf
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -69,4 +70,16 @@ func getVariableAsBool(name string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func getVariableAsKind(name string, kind reflect.Kind) (interface{}, error) {
+	switch kind {
+	case reflect.Bool:
+		return getVariableAsBool(name)
+	case reflect.String:
+		return getVariableAsString(name)
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		return getVariableAsInt(name)
+	}
+	return nil, nil
 }
