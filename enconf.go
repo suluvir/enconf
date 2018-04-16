@@ -24,17 +24,36 @@ func LoadConfiguration(configStruct interface{}) error {
 // LoadConfigurationWithPrefix does the same as `LoadConfiguration`, but allows for a use of prefixes. The given
 // prefix string will me transformed into uppercase as the struct field names for the configuration struct.
 func LoadConfigurationWithPrefix(prefix string, configStruct interface{}) error {
+	return loadConfigurationRecursively(prefix, configStruct, []string{})
+}
+
+func loadConfigurationRecursively(prefix string, configStruct interface{}, configPath []string) error {
 	fields := getShallowFieldNamesInStruct(configStruct)
 	for _, field := range fields {
-		varName := getVariableNameFromPrefixAndConfigPath(prefix, []string{field})
-		value, getErr := getVariableAsKind(varName, getKindOfField(configStruct, field))
-		if getErr != nil {
-			return getErr
+		newConfigPath := append(configPath, field)
+
+		if isFieldStruct(configStruct, field) {
+
+		} else {
+			err := loadConfigurationVariable(prefix, configStruct, field, newConfigPath)
+			if err != nil {
+				return err
+			}
 		}
-		setErr := setValueOfStructField(configStruct, field, value)
-		if setErr != nil {
-			return setErr
-		}
+	}
+
+	return nil
+}
+
+func loadConfigurationVariable(prefix string, configStruct interface{}, field string, configPath []string) error {
+	varName := getVariableNameFromPrefixAndConfigPath(prefix, configPath)
+	value, getErr := getVariableAsKind(varName, getKindOfField(configStruct, field))
+	if getErr != nil {
+		return getErr
+	}
+	setErr := setValueOfStructField(configStruct, field, value)
+	if setErr != nil {
+		return setErr
 	}
 
 	return nil
