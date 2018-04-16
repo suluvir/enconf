@@ -31,6 +31,26 @@ func getShallowFieldNamesInStruct(s interface{}) []string {
 	return result
 }
 
+func getValueOfStructField(s interface{}, fieldName string) interface{} {
+	v := reflect.ValueOf(s).Elem()
+	field := v.FieldByName(fieldName)
+
+	kind := field.Kind()
+
+	switch kind {
+	case reflect.Int:
+		return field.Int()
+	case reflect.Bool:
+		return field.Bool()
+	case reflect.String:
+		return field.String()
+	case reflect.Struct:
+		return field.Interface()
+	}
+
+	return nil
+}
+
 func setValueOfStructField(s interface{}, fieldName string, fieldValue interface{}) error {
 	v := reflect.ValueOf(s).Elem()
 	field := v.FieldByName(fieldName)
