@@ -25,6 +25,13 @@ type shallowStruct struct {
 	SomeString string
 }
 
+type deepStruct struct {
+	SomeInt    int
+	SomeStruct struct{
+		SomeNested bool
+	}
+}
+
 func TestLoadConfigurationWithPrefixShallow(t *testing.T) {
 	a := shallowStruct{}
 
@@ -39,6 +46,23 @@ func TestLoadConfigurationWithPrefixShallow(t *testing.T) {
 	}
 
 	if !a.SomeBool || a.SomeInt != 15 || a.SomeString != "moin" {
+		t.Error("loading configuration failed.")
+	}
+}
+
+func TestLoadConfigurationWithPrefixDeep(t *testing.T) {
+	a := deepStruct{}
+
+	os.Setenv("SULUVIR_SOMEINT", "42")
+	os.Setenv("SULUVIR_SOMESTRUCT_SOMENESTED", "1")
+
+	err := LoadConfigurationWithPrefix("SULUVIR", &a)
+
+	if err != nil {
+		t.Errorf("loading configuration failed. Error: %s", err.Error())
+	}
+
+	if a.SomeInt != 42 || !a.SomeStruct.SomeNested {
 		t.Error("loading configuration failed.")
 	}
 }

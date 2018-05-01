@@ -33,7 +33,11 @@ func loadConfigurationRecursively(prefix string, configStruct interface{}, confi
 		newConfigPath := append(configPath, field)
 
 		if isFieldStruct(configStruct, field) {
-
+			newConfigStruct := getValueOfStructField(configStruct, field)
+			err := loadConfigurationRecursively(prefix, newConfigStruct, newConfigPath)
+			if err != nil {
+				return err
+			}
 		} else {
 			err := loadConfigurationVariable(prefix, configStruct, field, newConfigPath)
 			if err != nil {
